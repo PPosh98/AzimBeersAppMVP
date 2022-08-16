@@ -1,27 +1,28 @@
-package com.example.beersapplication.ui
+package com.example.beersapplication.presenter
+
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import com.example.beersapplication.api.FetchAPI
 import com.example.beersapplication.model.Beers
 import com.example.beersapplication.repository.Repository
 import com.example.beersapplication.roomdb.BeerEntity
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
-@HiltViewModel
-class BeersViewModel @Inject constructor(val repository: Repository): ViewModel() {
 
+class Presenter @Inject constructor(val repository: Repository): PresenterInterface {
     var _beersLiveData: MutableLiveData<Beers> = MutableLiveData(Beers())
 
     val readBeers: LiveData<List<BeerEntity>> = repository.localData.readBeersFromDb().asLiveData()
 
-    fun getBeers() {
+    override fun getBeersFromApi() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.remoteData.fetchAPI.getBeers()
@@ -35,6 +36,9 @@ class BeersViewModel @Inject constructor(val repository: Repository): ViewModel(
         }
     }
 
+    override fun getBeersObserverDB() = readBeers
+    override fun getBeersObserverAPI() = _beersLiveData
+
     fun addDataToDatabase(beers: Beers) {
 
         val beersEntity = BeerEntity(beers)
@@ -46,3 +50,7 @@ class BeersViewModel @Inject constructor(val repository: Repository): ViewModel(
         }
     }
 }
+
+
+
+

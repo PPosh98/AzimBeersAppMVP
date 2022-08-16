@@ -2,6 +2,8 @@ package com.example.beersapplication.di
 
 import com.example.beersapplication.api.APIReference.BASE_URL
 import com.example.beersapplication.api.FetchAPI
+import com.example.beersapplication.presenter.Presenter
+import com.example.beersapplication.presenter.PresenterInterface
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -43,8 +45,6 @@ class NetworkModule {
             .client(okHttpClient)
             .build()
 
-//    @Provides
-//    fun fetchAPI(retrofit: Retrofit): FetchAPI {
-//        return retrofit.create(FetchAPI::class.java)
-//    }
+    @Provides
+    fun getBeersPresenterReference(beersPresenter: Presenter): PresenterInterface = beersPresenter
 }

@@ -16,9 +16,4 @@ class RepositoryModule {
     @Provides
     fun getRepository(retrofit: Retrofit): FetchAPI = retrofit.create(FetchAPI::class.java)
 
-//    @Provides
-//    fun provideRemoteRepositorySource(api: FetchAPI): RemoteDataSource = RemoteDataSource(api)
-//
-//    @Provides
-//    fun provideBeersRepositoryRef(remoteDataSource: RemoteDataSource) : Repository = Repository(remoteDataSource)
 }
